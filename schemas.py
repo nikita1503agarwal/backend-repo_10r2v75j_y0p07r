@@ -13,6 +13,7 @@ Model name is converted to lowercase for the collection name:
 
 from pydantic import BaseModel, Field
 from typing import Optional
+from datetime import datetime
 
 # Example schemas (replace with your own):
 
@@ -37,6 +38,22 @@ class Product(BaseModel):
     price: float = Field(..., ge=0, description="Price in dollars")
     category: str = Field(..., description="Product category")
     in_stock: bool = Field(True, description="Whether product is in stock")
+
+# Air Quality Analyzer schemas
+
+class AirQualityReading(BaseModel):
+    """
+    Air quality realtime readings
+    Collection name: "airqualityreading"
+    """
+    pm25: float = Field(..., ge=0, description="PM2.5 concentration in µg/m³")
+    pm10: float = Field(..., ge=0, description="PM10 concentration in µg/m³")
+    co2: Optional[float] = Field(None, ge=0, description="CO₂ concentration in ppm")
+    temperature: Optional[float] = Field(None, description="Temperature in °C")
+    humidity: Optional[float] = Field(None, ge=0, le=100, description="Relative humidity %")
+    aqi: Optional[int] = Field(None, ge=0, le=500, description="Computed AQI index")
+    category: Optional[str] = Field(None, description="AQI category label")
+    timestamp: Optional[datetime] = Field(None, description="Reading timestamp (server assigned)")
 
 # Add your own schemas here:
 # --------------------------------------------------
